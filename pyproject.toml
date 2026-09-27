@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gamelog"
+version = "0.1.0"
+description = "Measure a real game, not a synthetic. Frame-time statistics (median, p95, p99, stutter ratio) from MangoHud logs."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "Sophia Marie DeClue"}]
+
+[project.urls]
+Homepage = "https://github.com/Sophia-Thickums/gamelog"
+
+[project.scripts]
+gamelog = "gamelog:main"
+
+[tool.setuptools]
+py-modules = ["gamelog"]
