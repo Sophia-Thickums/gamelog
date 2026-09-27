@@ -68,6 +68,22 @@ analysis — *a monitor that cannot see must never report absence.*
 - **It does not control the game.** You play; it measures. There is no automation of gameplay here.
 - **MangoHud crashed one synthetic benchmark in testing** (`vkmark`: `free(): invalid pointer`).
   That is a real incompatibility, recorded rather than worked around.
+- **★ MangoHud's GPU columns are NOT reliable on every card — verify yours before quoting them.**
+  Measured 2026-09-27 on an RX 9070 XT (RDNA4, Mesa 26.2.3) with MangoHud 0.8.4: the `fps` and
+  `frametime` columns were exact (1000/fps matched `frametime` to five decimal places, and the
+  fast cluster sat precisely on the panel's 164.83 Hz cap), but **every hardware column was dead** —
+  `gpu_load` read `0.0%` *while the card was at 100% busy*, `gpu_core_clock` was pinned at a
+  constant `600`, and `gpu_vram_used` returned the same 0.0156 on every row including the ones
+  inside a hard hitch. Reading those columns would have produced a confident, publishable, entirely
+  fictional bottleneck analysis. **Cross-check any GPU column against sysfs before believing it:**
+  `/sys/class/drm/card*/device/gpu_busy_percent`, `.../mem_info_vram_used`, `.../pp_dpm_sclk`,
+  `.../mem_info_gtt_used`. `gamelog` reports frame timing; it does not vouch for the hardware
+  columns of the tool that captured them.
+- **A median across a mixed run describes neither half.** The same session showed a frame-weighted
+  median of **164.8 fps** and a *time*-weighted picture of the run sitting at **~10 fps for 67% of
+  its duration**, because the two clusters were a 165 Hz cap and a stall. Always report the
+  distribution and the time spent in each regime — a single central number over a bimodal run is
+  not a summary, it is a coin flip.
 
 ## Background
 
