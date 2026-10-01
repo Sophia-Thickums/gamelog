@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Measure a real game, not a synthetic. Frame-time statistics (median, p95, p99, stutter ratio) from MangoHud logs."
 readme = "README.md"
 requires-python = ">=3.9"
+dependencies = ["numpy", "opencv-python-headless"]
 license = {text = "MIT"}
 authors = [{name = "Sophia Marie DeClue"}]
 

@@ -37,6 +37,32 @@ python3 gamelog.py --list            # what you can measure
 Requires `mangohud` (the frame-time capture layer — this is what the standard procedure uses).
 Standard library otherwise.
 
+## The problem this repo's premise creates, and the fix
+
+*"Measure a real game, not a synthetic"* is right, and it has a hole: **a real game has no ground
+truth.** Nobody can say what the correct answer *should* have been, so a real-workload measurement
+tells you something happened and never whether the number is right.
+
+The fix is not to go back to synthetics as the *workload*. It is to use a synthetic **as a
+calibration oracle**, where the answer is derivable in closed form, and run the real workload on an
+instrument that has already passed.
+
+**[`TAU_CALIBRATION_ORACLE.md`](TAU_CALIBRATION_ORACLE.md) + [`tau_oracle.py`](tau_oracle.py)** — a
+worked example. A monocular time-to-contact sensor ("how many frames until I touch that wall"), and
+an oracle that is *analytically exact*: scaling a frame by `s` about a point gives every feature the
+same τ = 1/(s−1), with the radius cancelling out. So the ground truth has **zero fitting error**.
+
+```bash
+python3 tau_oracle.py --self-test      # known answers, must PASS before it may report live
+```
+
+Accuracy ~1% (τ 19.842 vs exact 20.0). The oracle then caught two bugs no real-game measurement
+could have: a **negative control that lied** (a camera pan produced a plausible τ and was reported as
+"approaching"), and an **uncertainty gate that decorated instead of deciding**. Both are written up
+with the general rule — *no sensor returns a number; every sensor returns (value, uncertainty,
+last-verified)* — and the harder one for measurement rigs: **a rig that cannot read silence cannot be
+trusted with a signal.**
+
 ## Use
 
 ```bash
