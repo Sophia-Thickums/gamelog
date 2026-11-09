@@ -5,7 +5,7 @@ Ollama's service is pinned `MESA_VK_DEVICE_SELECT=1002:7550!` — EXCLUSIVE to t
 So every vision-model load lands on the SAME card a game renders on. A frame-time
 measurement taken with that in place measures the game *plus* my model, and calls it the game.
 
-## The fix (Ryan's idea, and better than a service restart)
+## The fix (a second instance, not a service restart)
 A SECOND ollama instance pinned to the VEGA FE, on its own port. The main one is untouched.
 
     MESA_VK_DEVICE_SELECT=1002:6863! OLLAMA_HOST=127.0.0.1:11435 \
